@@ -2,9 +2,8 @@
 
 WITH 
 
-  sales AS (SELECT * FROM `gz_raw_data.raw_gz_sales`)
-
-  ,product AS (SELECT * FROM `gz_raw_data.raw_gz_product`)
+sales AS (SELECT * FROM {{ ref('stg_sales') }} )
+,product AS (SELECT * FROM `gz_raw_data.raw_gz_product`)
 
 SELECT
   s.date_date
@@ -22,4 +21,4 @@ SELECT
 	-- margin --
 	,s.revenue - s.quantity*CAST(p.purchSE_PRICE AS FLOAT64) AS margin
 FROM sales s
-INNER JOIN product p ON s.pdt_id = p.products_id
+INNER JOIN product p ON s.products_id = p.products_id
